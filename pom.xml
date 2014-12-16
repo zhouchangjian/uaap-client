@@ -4,23 +4,21 @@
   <artifactId>uaap-client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
+  <properties>
+        <shiro.version>1.2.2</shiro.version>
+		<slf4j.version>1.7.7</slf4j.version>
+		<logback.version>1.1.2</logback.version>
+   </properties>
   <build>
-        <finalName>chapter17-client</finalName>
         <plugins>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
+                <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.8.v20121106</version>
+                <version>9.1.0.v20131115</version>
                 <configuration>
                     <webAppConfig>
-                        <contextPath>/chapter17-client</contextPath>
+                        <contextPath>/uaap-client</contextPath>
                     </webAppConfig>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>9080</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
                 </configuration>
             </plugin>
         </plugins>
@@ -146,6 +144,44 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.2.3</version>
         </dependency>
+		 <!-- LOGGING begin -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+	
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+	
+			<!-- 代码直接调用log4j会被桥接到slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<!-- 代码直接调用common-logging会被桥接到slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<!-- 代码直接调用java.util.logging会被桥接到slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 
+			<!-- log4jdbc --> 
+			<dependency>
+				<groupId>org.lazyluke</groupId>
+				<artifactId>log4jdbc-remix</artifactId>
+				<version>0.2.7</version>
+			</dependency>
+			<!-- LOGGING end --> 
     </dependencies>
 </project>
