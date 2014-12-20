@@ -16,6 +16,9 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.1.0.v20131115</version>
                 <configuration>
+                	<httpConnector>
+                		<port>9090</port>
+        			</httpConnector>
                     <webAppConfig>
                         <contextPath>/uaap-client</contextPath>
                     </webAppConfig>

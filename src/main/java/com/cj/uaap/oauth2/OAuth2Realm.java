@@ -14,14 +14,16 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * <p>User: Zhang Kaitao
- * <p>Date: 14-2-18
- * <p>Version: 1.0
+ * 实现用户认证与授权
+ * @author Administrator
+ *
  */
 public class OAuth2Realm extends AuthorizingRealm {
-
+	Logger loger = LoggerFactory.getLogger(OAuth2Realm.class);
     private String clientId;
     private String clientSecret;
     private String accessTokenUrl;
@@ -61,14 +63,16 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        OAuth2Token oAuth2Token = (OAuth2Token) token;
+    	loger.info("客户端OAuth2Realm认证开始");
+    	OAuth2Token oAuth2Token = (OAuth2Token) token;
         String code = oAuth2Token.getAuthCode();
+        loger.info("获取授权码为："+code);
+        loger.info("根据授权码获取用户信息开始");
         String username = extractUsername(code);
-        System.out.println(code);
-        System.out.println(username);
-
+        loger.info("根据授权码获取用户信息username为："+username);
         SimpleAuthenticationInfo authenticationInfo =
                 new SimpleAuthenticationInfo(username, code, getName());
+        loger.info("客户端OAuth2Realm认证结束");
         return authenticationInfo;
     }
 
@@ -86,20 +90,24 @@ public class OAuth2Realm extends AuthorizingRealm {
                     .setRedirectURI(redirectUrl)
                     .buildQueryMessage();
 
-            System.out.println(accessTokenUrl);
-            System.out.println(clientId);
-            System.out.println(clientSecret);
-            System.out.println(redirectUrl);
+            loger.info("获取accessToken,accessTokenUrl："+accessTokenUrl);
+            loger.info("获取accessToken,clientId："+clientId);
+            loger.info("获取accessToken,clientSecret："+clientSecret);
+            loger.info("获取accessToken,redirectUrl："+redirectUrl);
             OAuthAccessTokenResponse oAuthResponse = oAuthClient.accessToken(accessTokenRequest, OAuth.HttpMethod.POST);
 
             String accessToken = oAuthResponse.getAccessToken();
             Long expiresIn = oAuthResponse.getExpiresIn();
-
+            loger.info("accessToken："+accessToken);
+            loger.info("expiresIn："+expiresIn);
+            loger.info("获取userInfoUrl："+userInfoUrl);
             OAuthClientRequest userInfoRequest = new OAuthBearerClientRequest(userInfoUrl)
                     .setAccessToken(accessToken).buildQueryMessage();
-
+            loger.info("获取userInfoUrl，开始请求资源");
             OAuthResourceResponse resourceResponse = oAuthClient.resource(userInfoRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
+            loger.info("获取userInfoUrl，资源请求结束");
             String username = resourceResponse.getBody();
+            loger.info("获取userInfoUrl，username："+username);
             return username;
         } catch (Exception e) {
             e.printStackTrace();

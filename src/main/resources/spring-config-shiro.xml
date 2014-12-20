@@ -23,9 +23,9 @@
 
         <property name="clientId" value="c1ebe466-1cdc-4bd3-ab69-77c3561b9dee"/>
         <property name="clientSecret" value="d8346ea2-6017-43ed-ad68-19c0f971738b"/>
-        <property name="accessTokenUrl" value="http://localhost:8080/shiro-example-chapter16/accessToken"/>
-        <property name="userInfoUrl" value="http://localhost:8080/shiro-example-chapter16/userInfo"/>
-        <property name="redirectUrl" value="http://localhost:9080/chapter17-client/oauth2-login"/>
+        <property name="accessTokenUrl" value="http://127.0.0.1:8080/uaap-server/accessToken"/>
+        <property name="userInfoUrl" value="http://127.0.0.1:8080/uaap-server/userInfo"/>
+        <property name="redirectUrl" value="http://127.0.0.1:9090/uaap-client/oauth2-login"/>
     </bean>
 
     <!-- 会话ID生成器 -->
@@ -98,7 +98,7 @@
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="http://localhost:8080/shiro-example-chapter16/authorize?client_id=c1ebe466-1cdc-4bd3-ab69-77c3561b9dee&amp;response_type=code&amp;redirect_uri=http://localhost:9080/chapter17-client/oauth2-login"/>
+        <property name="loginUrl" value="http://127.0.0.1:8080/uaap-server/authorize?client_id=c1ebe466-1cdc-4bd3-ab69-77c3561b9dee&amp;response_type=code&amp;redirect_uri=http://127.0.0.1:9090/uaap-client/oauth2-login"/>
         <property name="successUrl" value="/"/>
         <property name="filters">
             <util:map>
