@@ -25,8 +25,19 @@
 		</encoder>
 	</appender>
 
+	<appender name="jms_log" class="ch.qos.logback.classic.net.JMSQueueAppender">  
+        <InitialContextFactoryName>  
+            org.apache.activemq.jndi.ActiveMQInitialContextFactory  
+        </InitialContextFactoryName>  
+        <ProviderURL>tcp://localhost:61616</ProviderURL>  
+        <QueueConnectionFactoryBindingName>ConnectionFactory</QueueConnectionFactoryBindingName>  
+        <QueueBindingName>dynamicQueues/test</QueueBindingName>  
+    </appender>  
+    
 	<!-- project default level -->
-	<logger name="com.cj.uaap" level="INFO" />
+	<logger name="com.cj.uaap" level="INFO" additivity="false">
+		<appender-ref ref="jms_log" />
+	</logger>
 
 	<!--log4jdbc -->
 	<logger name="jdbc" level="INFO" additivity="false">
@@ -36,5 +47,6 @@
 	<root level="INFO">
 		<appender-ref ref="console" />
 		<appender-ref ref="rollingFile" />
+		<appender-ref ref="jms_log" />
 	</root>
 </configuration>
